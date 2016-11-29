@@ -661,7 +661,7 @@ void MTCNN::img_show_T(cv::Mat img, std::string name)
 
     for(int i = 0; i < bounding_box_.size(); i++)
     {
-        rectangle(img_show, cv::Rect(bounding_box_[i].y, bounding_box_[i].x, bounding_box_[i].height, bounding_box_[i].width), cv::Scalar(0, 0, 255));
+        rectangle(img_show, cv::Rect(bounding_box_[i].y, bounding_box_[i].x, bounding_box_[i].height, bounding_box_[i].width), cv::Scalar(0, 0, 255), 3);
         cv::putText(img_show, std::to_string(confidence_[i]), cvPoint(bounding_box_[i].y + 3, bounding_box_[i].x + 13),
                     cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
     }
@@ -670,7 +670,7 @@ void MTCNN::img_show_T(cv::Mat img, std::string name)
     {
         for(int j = 0; j < alignment_[i].size(); j++)
         {
-            cv::circle(img_show, cv::Point(alignment_[i][j].y, alignment_[i][j].x), 5, cv::Scalar(0, 255, 0));
+            cv::circle(img_show, cv::Point(alignment_[i][j].y, alignment_[i][j].x), 5, cv::Scalar(255, 255, 0), 3);
         }
     }
 
