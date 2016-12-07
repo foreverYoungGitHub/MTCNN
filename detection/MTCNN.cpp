@@ -47,6 +47,24 @@ void MTCNN::detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles)
     P_Net();
 }
 
+void MTCNN::detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles, std::vector<float>& confidence)
+{
+    Preprocess(img);
+    P_Net();
+    local_NMS();
+    R_Net();
+    local_NMS();
+    O_Net();
+    global_NMS();
+
+    for(int i = 0; i < bounding_box_.size(); i++)
+    {
+        rectangles.push_back(cv::Rect(bounding_box_[i].y, bounding_box_[i].x, bounding_box_[i].height, bounding_box_[i].width));
+    }
+
+    confidence = confidence_;
+}
+
 void MTCNN::detection_TEST(const cv::Mat& img, std::vector<cv::Rect>& rectangles)
 {
     Preprocess(img);
@@ -129,6 +147,8 @@ void MTCNN::detect_net(int i)
     for (int j = 0; j < bounding_box_.size(); j++) {
         cv::Mat img = crop(img_, bounding_box_[j]);
         if (img.size() == cv::Size(0,0))
+            continue;
+        if (img.rows == 0 || img.cols == 0)
             continue;
         if (img.size() != input_geometry_[i])
             cv::resize(img, img, input_geometry_[i]);

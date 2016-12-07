@@ -24,6 +24,7 @@ public:
     ~MTCNN();
 
     void detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles);
+    void detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles, std::vector<float>& confidence);
     void detection_TEST(const cv::Mat& img, std::vector<cv::Rect>& rectangles);
 
     void Preprocess(const cv::Mat &img);
@@ -70,9 +71,9 @@ public:
     std::vector<float> alignment_temp_;
 
     //paramter for the threshold
-    int minSize_ = 40;
+    int minSize_ = 20;
     float factor_ = 0.709;
-    float threshold_[3] = {0.6, 0.7, 0.7};
+    float threshold_[3] = {0.5, 0.5, 0.3};
     float threshold_NMS_ = 0.5;
 };
 
