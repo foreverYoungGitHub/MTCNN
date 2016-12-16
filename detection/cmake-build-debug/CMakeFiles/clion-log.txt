@@ -1,5 +1,7 @@
 /Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/Young/projects/MTCNN/detection
--- Caffe: using OpenCV config from /usr/local/share/OpenCV
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/Young/projects/MTCNN/detection/cmake-build-debug
+CMake Error at CMakeLists.txt:10 (message):
+  caffe
+
+
+-- Configuring incomplete, errors occurred!
+See also "/Users/Young/projects/MTCNN/detection/cmake-build-debug/CMakeFiles/CMakeOutput.log".

@@ -4,9 +4,10 @@ project(MTCNN)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_STANDARD 11)
 
-#find_package(OpenCV)
+find_package(OpenCV)
 
 find_package(Caffe)
+message(FATAL_ERROR ${Caffe_LIBRARIES})
 include_directories(${Caffe_INCLUDE_DIRS})
 
 set(SOURCE_FILES main.cpp MTCNN.cpp MTCNN.h)

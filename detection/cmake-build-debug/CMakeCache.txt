@@ -195,6 +195,9 @@ MTCNN_BINARY_DIR:STATIC=/Users/Young/projects/MTCNN/detection/cmake-build-debug
 //Value Computed by CMake
 MTCNN_SOURCE_DIR:STATIC=/Users/Young/projects/MTCNN/detection
 
+//The directory containing a CMake configuration file for OpenCV.
+OpenCV_DIR:PATH=/usr/local/share/OpenCV
+
 //Path to a program.
 ProcessorCount_cmd_sysctl:FILEPATH=/usr/sbin/sysctl
 
