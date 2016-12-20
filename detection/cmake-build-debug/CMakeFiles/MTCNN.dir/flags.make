@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/Young/librarys/caffe/src -I/usr/local/include -I/Users/Young/librarys/caffe/cmake_build/include -I/usr/local/Cellar/hdf5/1.8.17/include -I/usr/local/opt/szip/include -I/usr/local/include/opencv -I/System/Library/Frameworks/Accelerate.framework/Versions/Current/Frameworks/vecLib.framework/Versions/Current/Headers -I/Users/Young/librarys/caffe/include 
+CXX_INCLUDES = -I/Users/Young/librarys/caffe/src -isystem /usr/local/include -I/Users/Young/librarys/caffe/cmake_build/include -I/usr/local/Cellar/hdf5/1.8.17/include -I/usr/local/opt/szip/include -isystem /usr/local/include/opencv -I/System/Library/Frameworks/Accelerate.framework/Versions/Current/Frameworks/vecLib.framework/Versions/Current/Headers -I/Users/Young/librarys/caffe/include 
 

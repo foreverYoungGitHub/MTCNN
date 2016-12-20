@@ -5,7 +5,7 @@
 		<Option title="MTCNN"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\librarys\;CMake Files\..\..\..\librarys\caffe\;CMake Files\..\..\..\librarys\caffe\cmake_build\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\usr\local\share\;CMake Files\..\..\..\..\..\usr\local\share\OpenCV\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\usr\local\share\;CMake Files\..\..\..\..\..\usr\local\share\OpenCV\;CMake Files\..\..\..\librarys\;CMake Files\..\..\..\librarys\caffe\;CMake Files\..\..\..\librarys\caffe\cmake_build\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/Users/Young/projects/MTCNN/detection/cmake-build-debug"/>
@@ -108,17 +108,23 @@
 		<Unit filename="/Users/Young/projects/MTCNN/detection/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../librarys/caffe/cmake_build/CaffeConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\librarys\caffe\cmake_build\"/>
+		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../../../usr/local/share/OpenCV/OpenCVConfig-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\share\OpenCV\"/>
 		</Unit>
-		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../librarys/caffe/cmake_build/CaffeTargets.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\librarys\caffe\cmake_build\"/>
+		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../../../usr/local/share/OpenCV/OpenCVConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\share\OpenCV\"/>
 		</Unit>
 		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../../../usr/local/share/OpenCV/OpenCVModules.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\share\OpenCV\"/>
 		</Unit>
 		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../../../usr/local/share/OpenCV/OpenCVModules-release.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\share\OpenCV\"/>
+		</Unit>
+		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../librarys/caffe/cmake_build/CaffeConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\librarys\caffe\cmake_build\"/>
+		</Unit>
+		<Unit filename="/Users/Young/projects/MTCNN/detection/../../../librarys/caffe/cmake_build/CaffeTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\librarys\caffe\cmake_build\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

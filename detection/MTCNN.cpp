@@ -45,6 +45,16 @@ void MTCNN::detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles)
 {
     Preprocess(img);
     P_Net();
+    local_NMS();
+    R_Net();
+    local_NMS();
+    O_Net();
+    global_NMS();
+
+    for(int i = 0; i < bounding_box_.size(); i++)
+    {
+        rectangles.push_back(cv::Rect(bounding_box_[i].y, bounding_box_[i].x, bounding_box_[i].height, bounding_box_[i].width));
+    }
 }
 
 void MTCNN::detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles, std::vector<float>& confidence)

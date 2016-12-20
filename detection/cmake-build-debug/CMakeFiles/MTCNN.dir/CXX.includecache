@@ -339,6 +339,8 @@ iostream
 -
 MTCNN.h
 /Users/Young/projects/MTCNN/detection/MTCNN.h
+opencv2/opencv.hpp
+/Users/Young/projects/MTCNN/detection/opencv2/opencv.hpp
 
 /usr/local/include/boost/algorithm/string/case_conv.hpp
 boost/algorithm/string/config.hpp
