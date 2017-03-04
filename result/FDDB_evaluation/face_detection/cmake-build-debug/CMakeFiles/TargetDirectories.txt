@@ -1,3 +1,0 @@
-/Users/Young/projects/MTCNN/result/FDDB_evaluation/face_detection/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/Young/projects/MTCNN/result/FDDB_evaluation/face_detection/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/Young/projects/MTCNN/result/FDDB_evaluation/face_detection/cmake-build-debug/CMakeFiles/face_detection.dir

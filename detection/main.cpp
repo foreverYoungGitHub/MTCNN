@@ -27,7 +27,7 @@ using namespace cv;
 //    string img_path = "../result/trump.jpg";
 //    Mat img = imread(img_path);
 //
-//    mtcnn.detection_TEST(img, rectangles);
+//    mtcnn.detection(img, rectangles);
 //
 //    std::cout << "Hello, World!" << std::endl;
 //    return 0;
@@ -52,11 +52,11 @@ int main() {
     MTCNN mtcnn(model_file, trained_file);
 
 
-//    VideoCapture cap(0);
-    VideoCapture cap("../../SuicideSquad.mp4");
+    VideoCapture cap(0);
+//    VideoCapture cap("../../SuicideSquad.mp4");
 
-    VideoWriter writer;
-    writer.open("../result/SuicideSquad.mp4",CV_FOURCC('M', 'J', 'P', 'G'), 25, Size(1280,720), true);
+//    VideoWriter writer;
+//    writer.open("../result/SuicideSquad.mp4",CV_FOURCC('M', 'J', 'P', 'G'), 25, Size(1280,720), true);
 
     Mat img;
     int frame_count = 0;
@@ -76,7 +76,7 @@ int main() {
         frame_count++;
         cv::putText(img, std::to_string(frame_count), cvPoint(3, 13),
                     cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 255, 0), 1, CV_AA);
-        writer.write(img);
+//        writer.write(img);
         imshow("Live", img);
         waitKey(1);
     }

@@ -1,0 +1,16 @@
+net: "/Users/Young/Documents/Programming/MTCNN/MTCNN_train/ONet_train.prototxt"
+test_iter: 40
+test_interval:2500
+# The base learning rate, momentum and the weight decay of the network.
+base_lr: 0.00000675  #0.01
+momentum: 0.9
+weight_decay: 0.008
+# The learning rate policy
+lr_policy: "step"
+stepsize: 1000 #40000
+gamma: 0.0001
+display: 500
+max_iter: 1000
+snapshot: 500 #100000
+snapshot_prefix: "/Users/Young/Documents/Programming/MTCNN/MTCNN_train"
+solver_mode: CPU
