@@ -26,9 +26,9 @@ The accuracy in FDDB which is higher than 0.9. The model contained in  as a pret
 
 ## How to train
 
-A hdf5 dataset is necessray to train a model which has multiple labels in a Caffe model. A sample of script which can generate .hdf5 file is list [here]{https://github.com/foreverYoungGitHub/MTCNN/blob/master/script/train_sh/generate_hdf5.py}.
+A hdf5 dataset is necessray to train a model which has multiple labels in a Caffe model. A sample of script which can generate .hdf5 file is list [here](https://github.com/foreverYoungGitHub/MTCNN/blob/master/script/train_sh/generate_hdf5.py).
 
-In this sample, you need to prepare 4 txt file, which contains label (0 or 1), landmark (ratio in the cropped image), regression box (ratio), and cropped image pathes. A database contained landmarks infomation is needed to generate the sample with these multiple attribute, such as [CelebA]{http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html}. Then change the pathes in the sample code. The output hdf5 file is shown in `train_file_path`. Notice the image size needs to be changed to generate suitable data for you net.
+In this sample, you need to prepare 4 txt file, which contains label (0 or 1), landmark (ratio in the cropped image), regression box (ratio), and cropped image pathes. A database contained landmarks infomation is needed to generate the sample with these multiple attribute, such as [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html). Then change the pathes in the sample code. The output hdf5 file is shown in `train_file_path`. Notice the image size needs to be changed to generate suitable data for you net.
 
 ```
 label_path = '../dataset/label.txt'
