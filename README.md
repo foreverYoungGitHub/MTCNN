@@ -48,3 +48,34 @@ hdf5_data_param {
 ```
 
 Run the shell file and train the model.
+
+### Train strategy
+
+The images are used to train the CNN divide into 3 groups: positive face, negative face and part of the face. When the Intersection-over-Union (IoU) ratio of the cropped image is higher than 0.7, lower than 0.3, or between 0.3 and 0.7 to any ground truth provided by dataset, it belongs to the positive face, the negative face or the part of the face. (You can decide the thresholds by yourself.) The general train process is shown in following figure, while the detialed train processes are also listed.
+
+<img src="https://github.com/foreverYoungGitHub/MTCNN/blob/master/script/train_process.pdf" width="600">
+
+1. Cropping the images from the dataset randomly, and dividing into positive face, negative face and part of the face based on the IoU between the ground truth and cropped image;
+2. Training the P-Net based on the randomly cropped image;
+3. Cropping the image from the dataset based on the detected bounding box of the P-Net, dividing it and utilizing it to fine-tuning the P-Net;
+4. Training the R-Net based on the data used to fine-tuning the P-Net;
+5. Cropping the image from the dataset based on the detected bounding box of the R-Net, dividing it and utilizing it to fine-tuning the R-Net;
+6. Training the O-Net based on the data used to fine-tuning the P-Net and R-Net;
+7. Cropping the image from the dataset based on the detected bounding box of the O-Net, dividing it and utilizing it to fine-tuning the O-Net.
+
+### The example label for the 3 types data:
+
+positive face:
+   - face detection: 1;
+   - face landmark: [0.1,0.2,0.3,0.4,0.5,0.1,0.2,0.3,0.4,0.5];
+   - face regression: [0.1,0.1,0.1,0.1].
+part of the face:
+   - face detection: 1;
+   - face landmark: [0.1,0.2,0.3,0.4,0.5,0.1,0.2,0.3,0.4,0.5];
+   - face regression: [0.4,0.4,0.4,0.4].
+negative face:
+   - face detection: 0;
+   - face landmark: [0,0,0,0,0,0,0,0,0,0];
+   - face regression: [0,0,0,0].
+   
+You can also train the face detection and regression for the dataset without landmark label. The model is then used to train the face landmark.
