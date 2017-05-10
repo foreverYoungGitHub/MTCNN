@@ -69,10 +69,12 @@ positive face:
    - face detection: 1;
    - face landmark: [0.1,0.2,0.3,0.4,0.5,0.1,0.2,0.3,0.4,0.5];
    - face regression: [0.1,0.1,0.1,0.1].
+
 part of the face:
    - face detection: 1;
    - face landmark: [0.1,0.2,0.3,0.4,0.5,0.1,0.2,0.3,0.4,0.5];
    - face regression: [0.4,0.4,0.4,0.4].
+   
 negative face:
    - face detection: 0;
    - face landmark: [0,0,0,0,0,0,0,0,0,0];
