@@ -35,6 +35,8 @@ using namespace cv;
 
 int main() {
 
+
+    //the vector used to input the address of the net model
     vector<string> model_file = {
             "../model/det1.prototxt",
             "../model/det2.prototxt",
@@ -42,6 +44,7 @@ int main() {
 //            "../model/det4.prototxt"
     };
 
+    //the vector used to input the address of the net parameters
     vector<string> trained_file = {
             "../model/det1.caffemodel",
             "../model/det2.caffemodel",
@@ -50,7 +53,6 @@ int main() {
     };
 
     MTCNN mtcnn(model_file, trained_file);
-
 
     VideoCapture cap(0);
 //    VideoCapture cap("../../SuicideSquad.mp4");
@@ -64,13 +66,18 @@ int main() {
     {
         vector<Rect> rectangles;
         vector<float> confidences;
-        mtcnn.detection(img, rectangles, confidences);
+        std::vector<std::vector<cv::Point>> alignment;
+        mtcnn.detection(img, rectangles, confidences, alignment);
 
         for(int i = 0; i < rectangles.size(); i++)
         {
             int green = confidences[i] * 255;
             int red = (1 - confidences[i]) * 255;
             rectangle(img, rectangles[i], cv::Scalar(0, green, red), 3);
+            for(int j = 0; j < alignment[i].size(); j++)
+            {
+                cv::circle(img, alignment[i][j], 5, cv::Scalar(255, 255, 0), 3);
+            }
         }
 
         frame_count++;

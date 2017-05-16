@@ -19,12 +19,12 @@ class MTCNN {
 public:
 
     MTCNN();
-    MTCNN(const std::string &dir);
     MTCNN(const std::vector<std::string> model_file, const std::vector<std::string> trained_file);
     ~MTCNN();
 
     void detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles);
     void detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles, std::vector<float>& confidence);
+    void detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles, std::vector<float>& confidence, std::vector<std::vector<cv::Point>>& alignment);
     void detection_TEST(const cv::Mat& img, std::vector<cv::Rect>& rectangles);
 
     void Preprocess(const cv::Mat &img);
@@ -71,7 +71,7 @@ public:
     std::vector<float> alignment_temp_;
 
     //paramter for the threshold
-    int minSize_ = 20;
+    int minSize_ = 200;
     float factor_ = 0.709;
     float threshold_[3] = {0.5, 0.5, 0.3};
     float threshold_NMS_ = 0.5;

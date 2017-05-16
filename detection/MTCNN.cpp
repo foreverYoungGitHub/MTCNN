@@ -2,11 +2,13 @@
 // Created by Young on 2016/11/27.
 //
 
+/*
+ * TO DO : change the P-net and update the generat box
+ */
+
 #include "MTCNN.h"
 
 MTCNN::MTCNN(){}
-
-MTCNN::MTCNN(const std::string &dir) {}
 
 MTCNN::MTCNN(const std::vector<std::string> model_file, const std::vector<std::string> trained_file)
 {
@@ -51,28 +53,36 @@ void MTCNN::detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles)
     O_Net();
     global_NMS();
 
-    for(int i = 0; i < bounding_box_.size(); i++)
+
+    rectangles.clear();
+    for(auto &bounding_box : bounding_box_)
     {
-        rectangles.push_back(cv::Rect(bounding_box_[i].y, bounding_box_[i].x, bounding_box_[i].height, bounding_box_[i].width));
+        rectangles.push_back(cv::Rect(bounding_box.y, bounding_box.x, bounding_box.height, bounding_box.width));
     }
 }
 
 void MTCNN::detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles, std::vector<float>& confidence)
 {
-    Preprocess(img);
-    P_Net();
-    local_NMS();
-    R_Net();
-    local_NMS();
-    O_Net();
-    global_NMS();
-
-    for(int i = 0; i < bounding_box_.size(); i++)
-    {
-        rectangles.push_back(cv::Rect(bounding_box_[i].y, bounding_box_[i].x, bounding_box_[i].height, bounding_box_[i].width));
-    }
+    detection(img, rectangles);
 
     confidence = confidence_;
+}
+
+void MTCNN::detection(const cv::Mat& img, std::vector<cv::Rect>& rectangles, std::vector<float>& confidence, std::vector<std::vector<cv::Point>>& alignment)
+{
+    detection(img, rectangles, confidence);
+
+    alignment.clear();
+    for(auto &i : alignment_)
+    {
+        std::vector<cv::Point> temp_alignment;
+        for(auto &j : i)
+        {
+            temp_alignment.push_back(cv::Point(j.y, j.x));
+        }
+        alignment.push_back(std::move(temp_alignment));
+    }
+
 }
 
 void MTCNN::detection_TEST(const cv::Mat& img, std::vector<cv::Rect>& rectangles)
@@ -125,11 +135,9 @@ void MTCNN::P_Net()
 {
     resize_img();
 
-    for(int j = 0; j < img_resized_.size(); j++)
-    {
-        cv::Mat img = img_resized_[j];
-        Predict(img, 0);
-        GenerateBoxs(img);
+    for(auto img_resized : img_resized_){
+        Predict(img_resized, 0);
+        GenerateBoxs(img_resized);
     }
 }
 
@@ -193,14 +201,11 @@ void MTCNN::detect_net(int i)
 //            bbox.height = bounding_box_[j].height + regression_box_temp_[4*j+2] * bounding_box_[j].height;
 //            bbox.width = bounding_box_[j].width + regression_box_temp_[4*j+3] * bounding_box_[j].width;
 
-            if(bbox.x < -1000 || bbox.x > 1000)
-                int a = 0;
-
             if(i == 2)
             {
                 //face alignment
                 std::vector<cv::Point> align(5);
-                for(int k = 0; k <= 5; k++)
+                for(int k = 0; k < 5; k++)
                 {
 //                    align[k].x = bbox.x + bbox.width * alignment_temp_[10*j+5+k] - 1;
 //                    align[k].y = bbox.y + bbox.height * alignment_temp_[10*j+k] - 1;
@@ -281,6 +286,7 @@ void MTCNN::global_NMS()
     float threshold_IoM = threshold_NMS_;
     float threshold_IoU = threshold_NMS_ - 0.1;
 
+
     for(int i = 0; i < cur_rects.size(); i++)
     {
         for(int j = i + 1; j < cur_rects.size(); )
@@ -318,10 +324,10 @@ void MTCNN::global_NMS()
     alignment_ = alignment;
 }
 
+
 /*
- * This function input is a image without crop
+ * Predict function input is a image without crop
  * the reshape of input layer is image's height and width
- *
  */
 void MTCNN::Predict(const cv::Mat& img, int i)
 {
@@ -353,8 +359,9 @@ void MTCNN::Predict(const cv::Mat& img, int i)
 }
 
 /*
- * This function input is a group of image with crop from original image
- * the reshape of input layer is net's height and width
+ * Predict(const std::vector<cv::Mat> imgs, int i) function
+ * used to input is a group of image with crop from original image
+ * the reshape of input layer of net is the number, channels, height and width of images.
  */
 void MTCNN::Predict(const std::vector<cv::Mat> imgs, int i)
 {
@@ -373,45 +380,28 @@ void MTCNN::Predict(const std::vector<cv::Mat> imgs, int i)
     net->Forward();
     
     /* Copy the output layer to a std::vector */
-    
+    //You can also try to use the blob_by_name()
 
-    if( i == 1)
-    {
-        Blob<float>* rect = net->output_blobs()[0];
-        Blob<float>* confidence = net->output_blobs()[1];
+    //confidence
+    Blob<float>* confidence = net->output_blobs()[i];
+    int count = confidence->count() / 2; //the channel of confidence is two
+    const float* confidence_begin = confidence->cpu_data();
+    const float* confidence_end = confidence_begin + count * 2;
+    confidence_temp_ = std::vector<float>(confidence_begin, confidence_end);
 
-        int count = confidence->count() / 2;
-        const float* rect_begin = rect->cpu_data();
-        const float* rect_end = rect_begin + rect->channels() * count;
-        regression_box_temp_ = std::vector<float>(rect_begin, rect_end);
+    //regression_box
+    Blob<float>* rect = net->output_blobs()[0];
+    const float* rect_begin = rect->cpu_data();
+    const float* rect_end = rect_begin + rect->channels() * count;
+    regression_box_temp_ = std::vector<float>(rect_begin, rect_end);
 
-        const float* confidence_begin = confidence->cpu_data();
-        const float* confidence_end = confidence_begin + count * 2;
-
-        confidence_temp_ = std::vector<float>(confidence_begin, confidence_end);
-    }
-    
-    if(i == 2)
-    {
-        Blob<float>* rect = net->output_blobs()[0];
+    //landmarks
+    if( i == 2){
         Blob<float>* points = net->output_blobs()[1];
-        Blob<float>* confidence = net->output_blobs()[2];
-
-        int count = confidence->count() / 2;
-
-        const float* rect_begin = rect->cpu_data();
-        const float* rect_end = rect_begin + rect->channels() * count;
-        regression_box_temp_ = std::vector<float>(rect_begin, rect_end);
-
         const float* points_begin = points->cpu_data();
         const float* points_end = points_begin + points->channels() * count;
         alignment_temp_ = std::vector<float>(points_begin, points_end);
-
-        const float* confidence_begin = confidence->cpu_data();
-        const float* confidence_end = confidence_begin + count * 2;
-        confidence_temp_ = std::vector<float>(confidence_begin, confidence_end);
     }
-    
 }
 
 void MTCNN::WrapInputLayer(const cv::Mat& img, std::vector<cv::Mat> *input_channels, int i)
@@ -437,6 +427,10 @@ void MTCNN::WrapInputLayer(const cv::Mat& img, std::vector<cv::Mat> *input_chann
 
 }
 
+/*
+ * WrapInputLayer(const vector<cv::Mat> imgs, std::vector<cv::Mat> *input_channels, int i) function
+ * used to write the separate BGR planes directly to the input layer of the network
+ */
 void MTCNN::WrapInputLayer(const vector<cv::Mat> imgs, std::vector<cv::Mat> *input_channels, int i)
 {
     Blob<float> *input_layer = nets_[i]->input_blobs()[0];
@@ -501,9 +495,6 @@ void MTCNN::resize_img()
         cv::resize(img, resized, cv::Size(resized_w, resized_h), 0, 0, cv::INTER_AREA);
         resized.convertTo(resized, CV_32FC3, 0.0078125,-127.5*0.0078125);
         img_resized.push_back(resized);
-
-//        cv::imshow("resized_img",img_resized);
-//        cv::waitKey(0);
 
         minWH *= factor;
         scale *= factor;
