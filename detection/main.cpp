@@ -67,6 +67,7 @@ int main() {
         vector<Rect> rectangles;
         vector<float> confidences;
         std::vector<std::vector<cv::Point>> alignment;
+		std::cout << '\n' << "FACE DETECTION" << '\n';  // by yzh
         mtcnn.detection(img, rectangles, confidences, alignment);
 
         for(int i = 0; i < rectangles.size(); i++)

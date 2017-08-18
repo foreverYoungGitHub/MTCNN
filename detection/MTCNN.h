@@ -52,7 +52,7 @@ public:
     void img_show(cv::Mat img, std::string name);
     void img_show_T(cv::Mat img, std::string name);
     //param for P, R, O, L net
-    std::vector<std::shared_ptr<Net<float>>> nets_;
+    std::vector<std::shared_ptr<Net>> nets_;
     std::vector<cv::Size> input_geometry_;
     int num_channels_;
 
@@ -69,7 +69,7 @@ public:
     std::vector<float> confidence_temp_;
     std::vector<std::vector<cv::Point>> alignment_;
     std::vector<float> alignment_temp_;
-
+    std::vector<int> output_id;    // by yzh
     //paramter for the threshold
     int minSize_ = 200;
     float factor_ = 0.709;
