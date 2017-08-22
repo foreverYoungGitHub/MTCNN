@@ -5,34 +5,36 @@
 using namespace std;
 using namespace cv;
 
-//int main() {
-//
-//    vector<string> model_file = {
-//            "../model/det1.prototxt",
-//            "../model/det2.prototxt",
-//            "../model/det3.prototxt"
-////            "../model/det4.prototxt"
-//    };
-//
-//    vector<string> trained_file = {
-//            "../model/det1.caffemodel",
-//            "../model/det2.caffemodel",
-//            "../model/det3.caffemodel"
-////            "../model/det4.caffemodel"
-//    };
-//
-//    MTCNN mtcnn(model_file, trained_file);
-//
-//    vector<Rect> rectangles;
-//    string img_path = "../result/trump.jpg";
-//    Mat img = imread(img_path);
-//
-//    mtcnn.detection(img, rectangles);
-//
-//    std::cout << "Hello, World!" << std::endl;
-//    return 0;
-//}
+int main() {
 
+    vector<string> model_file = {
+            "../model/det1.prototxt",
+            "../model/det2.prototxt",
+            "../model/det3.prototxt"
+//            "../model/det4.prototxt"
+    };
+
+    vector<string> trained_file = {
+            "../model/det1.caffemodel",
+            "../model/det2.caffemodel",
+            "../model/det3.caffemodel"
+//            "../model/det4.caffemodel"
+    };
+
+    MTCNN mtcnn(model_file, trained_file);
+
+    vector<Rect> rectangles;
+    string img_path = "../result/trump.jpg";
+    Mat img = imread(img_path);
+
+    mtcnn.detection_TEST(img, rectangles);
+
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
+
+/*
+ * 
 int main() {
 
 
@@ -54,11 +56,11 @@ int main() {
 
     MTCNN mtcnn(model_file, trained_file);
 
-    VideoCapture cap(0);
-//    VideoCapture cap("../../SuicideSquad.mp4");
+//    VideoCapture cap(0);
+    VideoCapture cap("../../0294_02_004_angelina_jolie.avi");
 
-//    VideoWriter writer;
-//    writer.open("../result/SuicideSquad.mp4",CV_FOURCC('M', 'J', 'P', 'G'), 25, Size(1280,720), true);
+    VideoWriter writer;
+    writer.open("../result/0294_02_004_angelina_jolie.avi",CV_FOURCC('M', 'J', 'P', 'G'), 25, Size(1280,720), true);
 
     Mat img;
     int frame_count = 0;
@@ -67,7 +69,6 @@ int main() {
         vector<Rect> rectangles;
         vector<float> confidences;
         std::vector<std::vector<cv::Point>> alignment;
-		std::cout << '\n' << "FACE DETECTION" << '\n';  // by yzh
         mtcnn.detection(img, rectangles, confidences, alignment);
 
         for(int i = 0; i < rectangles.size(); i++)
@@ -84,7 +85,7 @@ int main() {
         frame_count++;
         cv::putText(img, std::to_string(frame_count), cvPoint(3, 13),
                     cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 255, 0), 1, CV_AA);
-//        writer.write(img);
+        writer.write(img);
         imshow("Live", img);
         waitKey(1);
     }
@@ -93,3 +94,4 @@ int main() {
 }
 
 
+*/
