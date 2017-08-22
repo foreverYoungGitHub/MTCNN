@@ -27,9 +27,8 @@ int main() {
     string img_path = "../result/trump.jpg";
     Mat img = imread(img_path);
 
-    mtcnn.detection_TEST(img, rectangles);
+    mtcnn.detection(img, rectangles);
 
-    std::cout << "Hello, World!" << std::endl;
     return 0;
 }
 

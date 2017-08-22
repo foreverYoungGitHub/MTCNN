@@ -7,7 +7,6 @@
  */
 
 #include "MTCNN.h"
-
 MTCNN::MTCNN(){}
 
 MTCNN::MTCNN(const std::vector<std::string> model_file, const std::vector<std::string> trained_file)
@@ -16,7 +15,7 @@ MTCNN::MTCNN(const std::vector<std::string> model_file, const std::vector<std::s
         caffe::SetMode(caffe::CPU, -1);
 		std::cout << '\n' << "USE CPU" << '\n';   // by yzh
     #else
-        caffe::Set_Mode(caffe::GPU, 0);
+        caffe::SetMode(caffe::GPU, 0);
 		std::cout << '\n' << "USE GPU" << '\n';   // by yzh
     #endif
 

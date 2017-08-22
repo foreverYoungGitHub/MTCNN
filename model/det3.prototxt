@@ -1,10 +1,17 @@
 name: "ONet"
-input: "data"
-input_dim: 1
-input_dim: 3
-input_dim: 48
-input_dim: 48
-##################################
+layer {
+  name: "input"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 1
+      dim: 3
+      dim: 48
+      dim: 48
+    }
+  }
+}
 layer {
   name: "conv1"
   type: "Convolution"
@@ -22,9 +29,9 @@ layer {
     num_output: 32
     kernel_size: 3
     stride: 1
-     weight_filler {
+    weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -65,16 +72,15 @@ layer {
     num_output: 64
     kernel_size: 3
     stride: 1
-     weight_filler {
+    weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
     }
   }
 }
-
 layer {
   name: "prelu2"
   type: "PReLU"
@@ -92,7 +98,6 @@ layer {
     stride: 2
   }
 }
-
 layer {
   name: "conv3"
   type: "Convolution"
@@ -107,11 +112,11 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-	num_output: 64
-	kernel_size: 3
+    num_output: 64
+    kernel_size: 3
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -149,11 +154,11 @@ layer {
     decay_mult: 1
   }
   convolution_param {
-	num_output: 128
-	kernel_size: 2
+    num_output: 128
+    kernel_size: 2
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -166,8 +171,6 @@ layer {
   bottom: "conv4"
   top: "conv4"
 }
-
-
 layer {
   name: "conv5"
   type: "InnerProduct"
@@ -182,18 +185,16 @@ layer {
     decay_mult: 1
   }
   inner_product_param {
-	#kernel_size: 3
-	num_output: 256
+    num_output: 256
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
     }
   }
 }
-
 layer {
   name: "drop5"
   type: "Dropout"
@@ -209,8 +210,6 @@ layer {
   bottom: "conv5"
   top: "conv5"
 }
-
-
 layer {
   name: "conv6-1"
   type: "InnerProduct"
@@ -225,11 +224,10 @@ layer {
     decay_mult: 1
   }
   inner_product_param {
-    #kernel_size: 1
-	num_output: 2
+    num_output: 2
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -250,11 +248,10 @@ layer {
     decay_mult: 1
   }
   inner_product_param {
-  	#kernel_size: 1
-	num_output: 4
+    num_output: 4
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -275,11 +272,10 @@ layer {
     decay_mult: 1
   }
   inner_product_param {
-  	#kernel_size: 1
-	num_output: 10
+    num_output: 10
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0

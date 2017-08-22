@@ -1,13 +1,17 @@
 name: "RNet"
-input: "data"
-input_dim: 1
-input_dim: 3
-input_dim: 24
-input_dim: 24
-
-
-##########################
-######################
+layer {
+  name: "input"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 1
+      dim: 3
+      dim: 24
+      dim: 24
+    }
+  }
+}
 layer {
   name: "conv1"
   type: "Convolution"
@@ -25,9 +29,9 @@ layer {
     num_output: 28
     kernel_size: 3
     stride: 1
-     weight_filler {
+    weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -52,7 +56,6 @@ layer {
     stride: 2
   }
 }
-
 layer {
   name: "conv2"
   type: "Convolution"
@@ -72,7 +75,7 @@ layer {
     stride: 1
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -97,9 +100,6 @@ layer {
     stride: 2
   }
 }
-####################################
-
-##################################
 layer {
   name: "conv3"
   type: "Convolution"
@@ -119,7 +119,7 @@ layer {
     stride: 1
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -133,10 +133,6 @@ layer {
   top: "conv3"
   propagate_down: true
 }
-###############################
-
-###############################
-
 layer {
   name: "conv4"
   type: "InnerProduct"
@@ -154,7 +150,7 @@ layer {
     num_output: 128
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -167,7 +163,6 @@ layer {
   bottom: "conv4"
   top: "conv4"
 }
-
 layer {
   name: "conv5-1"
   type: "InnerProduct"
@@ -183,11 +178,9 @@ layer {
   }
   inner_product_param {
     num_output: 2
-    #kernel_size: 1
-    #stride: 1
     weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0
@@ -209,11 +202,9 @@ layer {
   }
   inner_product_param {
     num_output: 4
-    #kernel_size: 1
-    #stride: 1
-     weight_filler {
+    weight_filler {
       type: "xavier"
-	}
+    }
     bias_filler {
       type: "constant"
       value: 0

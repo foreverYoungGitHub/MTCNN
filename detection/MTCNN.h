@@ -2,7 +2,7 @@
 // Created by Young on 2016/11/27.
 //
 
-#define CPU_ONLY
+//#define CPU_ONLY
 
 #ifndef MTCNN_MTCNN_H
 #define MTCNN_MTCNN_H
