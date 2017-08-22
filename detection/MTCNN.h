@@ -69,12 +69,14 @@ public:
     std::vector<float> confidence_temp_;
     std::vector<std::vector<cv::Point>> alignment_;
     std::vector<float> alignment_temp_;
-    std::vector<int> output_id;    // by yzh
     //paramter for the threshold
     int minSize_ = 200;
     float factor_ = 0.709;
     float threshold_[3] = {0.5, 0.5, 0.3};
     float threshold_NMS_ = 0.5;
+	std::vector<std::vector<string> > output_blob_names_ = {{"conv4-2", "prob1"}, 
+															{"conv5-2", "prob1"},
+															{"conv6-2", "conv6-3", "prob1"} };
 };
 
 
