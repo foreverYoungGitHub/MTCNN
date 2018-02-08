@@ -51,7 +51,7 @@ Run the shell file and train the model.
 
 ### Train strategy
 
-The images are used to train the CNN divide into 3 groups: positive face, negative face and part of the face. When the Intersection-over-Union (IoU) ratio of the cropped image is higher than 0.7, lower than 0.3, or between 0.3 and 0.7 to any ground truth provided by dataset, it belongs to the positive face, the negative face or the part of the face. (You can decide the thresholds by yourself.) The general train process is shown in following figure, while the detialed train processes are also listed.
+The images are used to train the CNN divide into 3 groups: positive face, negative face and part of the face. When the Intersection-over-Union (IoU) ratio of the cropped image is higher than 0.7, lower than 0.3, or between 0.3 and 0.7 to any ground truth provided by dataset, it belongs to the positive face, the negative face or the part of the face. (You can decide the thresholds by yourself.) The general train process is shown in following figure, while the detailed train processes are also listed.
 
 <img src="https://github.com/foreverYoungGitHub/MTCNN/blob/master/script/train_process.png" width="600">
 
