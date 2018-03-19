@@ -7,28 +7,29 @@
  */
 
 #include "MTCNN.h"
-
 MTCNN::MTCNN(){}
 
 MTCNN::MTCNN(const std::vector<std::string> model_file, const std::vector<std::string> trained_file)
 {
     #ifdef CPU_ONLY
-        Caffe::set_mode(Caffe::CPU);
+        caffe::SetMode(caffe::CPU, -1);
+		std::cout << '\n' << "USE CPU" << '\n';   // by yzh
     #else
-        Caffe::set_mode(Caffe::GPU);
+        caffe::SetMode(caffe::GPU, 0);
+		std::cout << '\n' << "USE GPU" << '\n';   // by yzh
     #endif
 
     for(int i = 0; i < model_file.size(); i++)
     {
-        std::shared_ptr<Net<float>> net;
+        std::shared_ptr<Net> net;
 
         cv::Size input_geometry;
         int num_channel;
 
-        net.reset(new Net<float>(model_file[i], TEST));
+        net.reset(new Net(model_file[i]));
         net->CopyTrainedLayersFrom(trained_file[i]);
-
-        Blob<float>* input_layer = net->input_blobs()[0];
+	
+        Blob* input_layer = net->blob_by_name("data").get();
         num_channel = input_layer->channels();
         input_geometry = cv::Size(input_layer->width(), input_layer->height());
 
@@ -331,9 +332,10 @@ void MTCNN::global_NMS()
  */
 void MTCNN::Predict(const cv::Mat& img, int i)
 {
-    std::shared_ptr<Net<float>> net = nets_[i];
-
-    Blob<float>* input_layer = net->input_blobs()[0];
+    std::shared_ptr<Net> net = nets_[i];
+	std::vector<string> output_blob_names = output_blob_names_[i];
+	
+    Blob* input_layer = net->blob_by_name("data").get();
     input_layer->Reshape(1, num_channels_,
                          img.rows, img.cols);
     /* Forward dimension change to all layers. */
@@ -344,8 +346,8 @@ void MTCNN::Predict(const cv::Mat& img, int i)
     net->Forward();
 
     /* Copy the output layer to a std::vector */
-    Blob<float>* rect = net->output_blobs()[0];
-    Blob<float>* confidence = net->output_blobs()[1];
+    Blob* rect = net->blob_by_name(output_blob_names[0]).get();
+    Blob* confidence = net->blob_by_name(output_blob_names[1]).get();
     int count = confidence->count() / 2;
 
     const float* rect_begin = rect->cpu_data();
@@ -365,9 +367,10 @@ void MTCNN::Predict(const cv::Mat& img, int i)
  */
 void MTCNN::Predict(const std::vector<cv::Mat> imgs, int i)
 {
-    std::shared_ptr<Net<float>> net = nets_[i];
-
-    Blob<float>* input_layer = net->input_blobs()[0];
+    std::shared_ptr<Net> net = nets_[i];
+	std::vector<string> output_blob_names = output_blob_names_[i];
+	
+    Blob* input_layer = net->blob_by_name("data").get();
     input_layer->Reshape(imgs.size(), num_channels_,
                          input_geometry_[i].height, input_geometry_[i].width);
     int num = input_layer->num();
@@ -383,21 +386,21 @@ void MTCNN::Predict(const std::vector<cv::Mat> imgs, int i)
     //You can also try to use the blob_by_name()
 
     //confidence
-    Blob<float>* confidence = net->output_blobs()[i];
+    Blob* confidence = net->blob_by_name(output_blob_names[i]).get();
     int count = confidence->count() / 2; //the channel of confidence is two
     const float* confidence_begin = confidence->cpu_data();
     const float* confidence_end = confidence_begin + count * 2;
     confidence_temp_ = std::vector<float>(confidence_begin, confidence_end);
 
     //regression_box
-    Blob<float>* rect = net->output_blobs()[0];
+    Blob* rect = net->blob_by_name(output_blob_names[0]).get();
     const float* rect_begin = rect->cpu_data();
     const float* rect_end = rect_begin + rect->channels() * count;
     regression_box_temp_ = std::vector<float>(rect_begin, rect_end);
 
     //landmarks
     if( i == 2){
-        Blob<float>* points = net->output_blobs()[1];
+        Blob* points = net->blob_by_name(output_blob_names[1]).get();
         const float* points_begin = points->cpu_data();
         const float* points_end = points_begin + points->channels() * count;
         alignment_temp_ = std::vector<float>(points_begin, points_end);
@@ -406,7 +409,7 @@ void MTCNN::Predict(const std::vector<cv::Mat> imgs, int i)
 
 void MTCNN::WrapInputLayer(const cv::Mat& img, std::vector<cv::Mat> *input_channels, int i)
 {
-    Blob<float>* input_layer = nets_[i]->input_blobs()[0];
+    Blob* input_layer = nets_[i]->blob_by_name("data").get();
 
     int width = input_layer->width();
     int height = input_layer->height();
@@ -433,7 +436,7 @@ void MTCNN::WrapInputLayer(const cv::Mat& img, std::vector<cv::Mat> *input_chann
  */
 void MTCNN::WrapInputLayer(const vector<cv::Mat> imgs, std::vector<cv::Mat> *input_channels, int i)
 {
-    Blob<float> *input_layer = nets_[i]->input_blobs()[0];
+    Blob *input_layer = nets_[i]->blob_by_name("data").get();
 
     int width = input_layer->width();
     int height = input_layer->height();

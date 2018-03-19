@@ -2,6 +2,9 @@
 #include "MTCNN.h"
 #include "opencv2/opencv.hpp"
 #include <time.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <cstring>
 
 using namespace std;
 using namespace cv;
@@ -24,18 +27,36 @@ int main() {
 
     MTCNN mtcnn(model_file, trained_file);
 
-    vector<Rect> rectangles;
-    string img_path = "../result/trump.jpg";
-    Mat img = imread(img_path);
-
-	int count = 1;
-	unsigned start = time(NULL);
-	for(int i=0; i < count; i++) {
-		mtcnn.detection_TEST(img, rectangles);
-	}
-	unsigned end = time(NULL);
-	unsigned ave = (end-start)*1000.0/count;
-	std::cout << "Run " << count << " times, "<<"Average time:" << ave << std::endl; 
+    
+    const char *dirPath = "/home/yzh/working/FaceNet/face_recognition_mcaffe/test/precision_test/picture_for_all/";
+    DIR * pd = opendir(dirPath);
+    string sdirPath(dirPath);
+    string img_path;
+    struct dirent *filename;
+    int count = 0;
+    int nums = 200;
+    time_t total = 0;
+    while(nums > 0 && (filename=readdir(pd))) {
+	if( strcmp(filename->d_name, ".") == 0 || strcmp(filename->d_name, "..") == 0) 
+	    continue;
+	img_path = sdirPath + filename->d_name;
+        //std::cout << img_path << std::endl;
+	time_t start = time(NULL);
+	Mat img = imread(img_path);
+	//imshow("picture", img);
+	//waitKey(0);
+	vector<Rect> rectangles;
+	mtcnn.detection(img, rectangles);
+	time_t end = time(NULL);
+	total +=  end - start;
+	count++;
+	//std::cout << count << endl;
+	nums--;
+    }
+     closedir(pd);
+     std::cout << "total:" << total << std::endl;
+     double ave = total*1000.0/count;
+     std::cout << "Run " << count << " times, "<<"Average time:" << ave << std::endl; 
 
     return 0;
 }
